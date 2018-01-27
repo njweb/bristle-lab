@@ -1,0 +1,22 @@
+{
+  "inputPaths": {
+    "scripts": "./src/app.js",
+    "styles": "./src/site.styl",
+    "home": "./src/home.pug",
+    "assets": "./src/assets/"
+  },
+  "outputPaths": {
+    "development": "./_dev",
+    "production": "./_production"
+  },
+  "appConfiguration": {
+    "dev": {
+      "environment": "development",
+      "apiHostURL": "http://localhost:3002"
+    },
+    "production": {
+      "environment": "production",
+      "apiHostURL": "http://localhost:3002"
+    }
+  }
+}

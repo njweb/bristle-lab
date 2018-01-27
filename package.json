@@ -1,0 +1,51 @@
+{
+  "name": "TrackWatch-Client",
+  "version": "0.3.0",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:njw/clients-basler-peassessment.git"
+  },
+  "description": "A progress tracking app for PE assessment data",
+  "license": "All Rights Reserved",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "build": "rm -rf ./_dev && npm run build:views && npm run build:styles && npm run build:scripts",
+    "build:views": "pug src/home.pug -o _dev -O '{\"jsPath\": \"/app.js\", \"cssPath\": \"/site.css\"}'",
+    "build:scripts": "NODE_ENV=development rollup -c",
+    "build:styles": "stylus -u ./node_modules/nib/lib/nib -u ./node_modules/rupture/index src/site.styl -o _dev",
+    "watch": "NODE_ENV=development rollup -c -w & stylus -w -u ./node_modules/nib/lib/nib -u ./node_modules/rupture/index src/site.styl -o _dev",
+    "scripts": "rollup -c",
+    "styles": "stylus -u ./node_modules/nib/lib/nib -u ./node_modules/rupture/index",
+    "views": "pug"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "bristle": "../bristle",
+    "commander": "^2.11.0",
+    "jest": "^21.2.1",
+    "nib": "^1.1.2",
+    "pug": "^2.0.0-rc.4",
+    "pug-cli": "^1.0.0-alpha6",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-commonjs": "^8.2.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rupture": "^0.6.2",
+    "stylus": "^0.54.5"
+  },
+  "dependencies": {
+    "barely-functional": "^2.0.0",
+    "gl-matrix": "^2.4.0",
+    "linkstate": "^1.0.1",
+    "preact": "^8.1.0",
+    "redux": "^3.3.1",
+    "timm": "^1.2.5"
+  }
+}
