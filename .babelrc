@@ -1,0 +1,15 @@
+{
+  "presets": [ ["env", {"modules": false}], "react" ],
+  "plugins": [
+    ["transform-react-jsx", {"pragma": "h"}],
+    "transform-object-rest-spread"
+  ],
+  "env": {
+    "test": {
+      "presets": ["env", "react"]
+    },
+    "development": {
+      "plugins": [ "external-helpers" ]
+    }
+  }
+}

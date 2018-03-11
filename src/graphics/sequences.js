@@ -19,7 +19,8 @@ export const spikyTriangleSeq = ctx => {
 };
 
 export const crazyCurvySeq = ctx => {
-  const adj = (((Date.now() - ctx.state.timestamp)) / 1000 / 6);
+  // const adj = (((Date.now() - ctx.state.timestamp)) / 1000 / 6);
+  const adj = ctx.state.timestamp * 0.000165;
   const bezierStorage = [[0, 0], [0, 0], [0, 0], [0, 0]];
   splitBezierTakeStart(bezierStorage, [-20, 8], [-5, -8], [5, 38], [20, 8], adj);
 
@@ -42,9 +43,9 @@ export const wobblyTriSeq = (() => {
   const cacheMat2d = mat2d.create();
 
   const triPointControls = [
-    { point: [-20, -8], length: 3, rotOffset: (Math.PI * 2) / 3 },
-    { point: [0, 24], length: 1, rotOffset: ((Math.PI * 2) / 3) * 2 },
-    { point: [20, -8], length: 2, rotOffset: 0 }
+    {point: [-20, -8], length: 3, rotOffset: (Math.PI * 2) / 3},
+    {point: [0, 24], length: 1, rotOffset: ((Math.PI * 2) / 3) * 2},
+    {point: [20, -8], length: 2, rotOffset: 0}
   ];
 
   const calcTriPoint = (out, triPoint, rot) => {
@@ -55,15 +56,30 @@ export const wobblyTriSeq = (() => {
     return out;
   };
 
-  const computeTimeAdj = timestamp => ((Date.now() - timestamp)) / 1000;
-
-  return ctx => {
-    const adj = computeTimeAdj(ctx.state.timestamp) * 2;
-
-    ctx.transform = mat2d.fromRotation(cacheMat2d, adj * 0.1);
+  const renderTri = (ctx) => {
+    const adj = ctx.state.timestamp * 0.003;
     ctx
       .line(calcTriPoint(cachePoint, triPointControls[0], -adj))
       .line(calcTriPoint(cachePoint, triPointControls[1], -adj))
       .line(calcTriPoint(cachePoint, triPointControls[2], -adj));
+  };
+
+  return ctx => {
+    const adj = ctx.state.timestamp * 0.002;
+    ctx.branch(renderTri, mat2d.fromRotation(cacheMat2d, adj * 0.1));
+  }
+})();
+
+export const sillyGhostSeq = (() => {
+  return ctx => {
+    ctx
+      .move([2.24,3.51])
+      .bezier([3.64,2.92],[4.03,2.39],[4.23,-0.45])
+      .bezier([4.43,-3.29],[4.44,-5.7],[3.43,-5.82])
+      .bezier([1.34,-6.06],[2.65,-3.17],[2.65,-3.17])
+      .line([-1.79,-3.44])
+      .bezier([-1.79,-3.44],[-0.6,-5.85],[-2.12,-5.84])
+      .bezier([-3.59,-5.82],[-3.31,0.55],[-2.8,2.23])
+      .bezier([-2.31,3.83],[0.83,4.1],[2.24,3.51]);
   }
 })();

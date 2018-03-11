@@ -122,3 +122,40 @@ export const splitBezierTakeEnd = (() => {
     vec2.copy(outBezier[3], endPoint);
   }
 })();
+
+export const buildCanvasContext2dProjector = (canvasContext2d, {
+  flipX = false,
+  flipY = false,
+  xLeftPercentage = 0.5,
+  yTopPercentage = 0.5,
+  sourceWidth,
+  sourceHeight
+}) => {
+  const canvasWidth = canvasContext2d.canvas.width;
+  const canvasHeight = canvasContext2d.canvas.height;
+  const canvasRatio = canvasWidth / canvasHeight;
+
+  console.log('CANVAS-WHR: ', canvasWidth, canvasHeight, canvasRatio);
+
+  if(sourceWidth && sourceHeight) {
+    throw Error('Cannot apply both a source width and height to the projection');
+  }
+  if(!sourceWidth && !sourceHeight) {
+    sourceWidth = canvasWidth;
+  }
+
+  const scaling = sourceWidth ? canvasWidth / sourceWidth : canvasHeight / sourceHeight;
+
+  const xOffset = canvasWidth * xLeftPercentage;
+  const yOffset = canvasHeight * yTopPercentage;
+
+  const projectionBuffer = new ArrayBuffer(Float32Array.BYTES_PER_ELEMENT * 6 * 2);
+  const projMat2dArray = new Float32Array(projectionBuffer, 0, 6);
+  const scaleMat2dArray = new Float32Array(projectionBuffer, Float32Array.BYTES_PER_ELEMENT * 6, 6);
+
+  mat2d.fromTranslation(projMat2dArray, [xOffset, yOffset]);
+  mat2d.fromScaling(scaleMat2dArray, [scaling * (flipX ? -1 : 1), scaling * (flipY ? -1 : 1)]);
+  mat2d.mul(projMat2dArray, projMat2dArray, scaleMat2dArray);
+
+  return projMat2dArray;
+};
